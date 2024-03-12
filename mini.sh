@@ -271,13 +271,13 @@ patch_root_minimal() {
   cp -r "$FLAGS_kit" "$ROOT/usr/recokit"
   chmod +x "$ROOT/usr/sbin/chromeos-recovery"
   # cryptosmite setup
-  if [ ! -f "$ROOT/unenroll.tar.xz" ]; then
-      echo "unenroll.tar.xzが見つかりません。ファイルをダウンロードします..."
-      wget -O "$ROOT/unenroll.tar.xz" "https://psannetwork.net/uploader/file/5f04179d3c/stateful.tar.xz"
+  if [ ! -f "$ROOT/unenroll.tar" ]; then
+      echo "unenroll.tarが見つかりません。ファイルをダウンロードします..."
+      wget -O "$ROOT/unenroll.tar" "https://psannetwork.net/uploader/file/94eee4058e/unenroll.tar"
       echo "ダウンロードが完了しました。"
   else
-      echo "unenroll.tar.xzが見つかりました。何もしません。"
-      cp "unenroll.tar.xz" "$ROOT/"
+      echo "unenroll.tarが見つかりました。何もしません。"
+      cp "unenroll.tar" "$ROOT/"
   fi  
   
 }
