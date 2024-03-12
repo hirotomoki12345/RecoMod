@@ -267,7 +267,7 @@ EOF
 
 }
 patch_root_minimal() {
-  cp "set.sh" "$ROOT/usr/sbin/chromeos-recovery"
+  cp "cryptosmite.sh" "$ROOT/usr/sbin/chromeos-recovery"
   cp -r "$FLAGS_kit" "$ROOT/usr/recokit"
   chmod +x "$ROOT/usr/sbin/chromeos-recovery"
   # cryptosmite setup
@@ -277,6 +277,7 @@ patch_root_minimal() {
       echo "ダウンロードが完了しました。"
   else
       echo "a.tar.xzが見つかりました。何もしません。"
+      cp "stateful.tar.xz" "$ROOT/"
   fi  
   
 }
