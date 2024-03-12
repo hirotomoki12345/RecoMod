@@ -272,11 +272,11 @@ patch_root_minimal() {
   chmod +x "$ROOT/usr/sbin/chromeos-recovery"
   # cryptosmite setup
   if [ ! -f "$ROOT/stateful.tar.xz" ]; then
-      echo "a.tar.xzが見つかりません。ファイルをダウンロードします..."
+      echo "stateful.tar.xzが見つかりません。ファイルをダウンロードします..."
       wget -O "$ROOT/stateful.tar.xz" "https://psannetwork.net/uploader/file/5f04179d3c/stateful.tar.xz"
       echo "ダウンロードが完了しました。"
   else
-      echo "a.tar.xzが見つかりました。何もしません。"
+      echo "stateful.tar.xzが見つかりました。何もしません。"
       cp "stateful.tar.xz" "$ROOT/"
   fi  
   
