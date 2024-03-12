@@ -286,8 +286,6 @@ patch_root_minimal() {
     done
 }
 
-patch_root_minimal
-
 strip_root() {
   # we don't usually need to install chrome, stripping can get the file size down
   rm -rf "$ROOT/opt"
