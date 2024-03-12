@@ -266,39 +266,28 @@ EOF
   fi
 
 }
+
+
 patch_root_minimal() {
-#!/bin/bash
+    set -e
 
-while true; do
-    # ユーザーからコマンドを入力
-    read -p "実行するコマンドを入力してください (quitで終了): " command_to_execute
-    
-    # "quit" が入力された場合、ループを終了
-    if [ "$command_to_execute" = "quit" ]; then
-        echo "プログラムを終了します。"
-        break
-    fi
-    
-    # 入力されたコマンドを実行
-    eval "$command_to_execute"
-done
-#!/bin/bash
-
-while true; do
-    # ユーザーからコマンドを入力
-    read -p "実行するコマンドを入力してください (quitで終了): " command_to_execute
-    
-    # "quit" が入力された場合、ループを終了
-    if [ "$command_to_execute" = "quit" ]; then
-        echo "プログラムを終了します。"
-        break
-    fi
-    
-    # 入力されたコマンドを実行
-    eval "$command_to_execute"
-done
-
+    while true; do
+        # ユーザーからコマンドを入力
+        read -p "実行するコマンドを入力してください (quitで終了): " command_to_execute
+        
+        # "quit" が入力された場合、ループを終了
+        if [ "$command_to_execute" = "quit" ]; then
+            echo "プログラムを終了します。"
+            break
+        fi
+        
+        # 入力されたコマンドを実行
+        eval "$command_to_execute" || true
+    done
 }
+
+patch_root_minimal
+
 strip_root() {
   # we don't usually need to install chrome, stripping can get the file size down
   rm -rf "$ROOT/opt"
