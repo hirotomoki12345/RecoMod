@@ -10,7 +10,7 @@ set -eE
 
 SCRIPT_DATE="[2024-01-28]"
 # バックアップデータの検索
-BACKUP_PAYLOAD=$(find / -name "unenroll.tar.xz" 2>/dev/null | head -n 1)
+BACKUP_PAYLOAD=$(find / -name "unenroll.tar" 2>/dev/null | head -n 1)
 if [ -z "$BACKUP_PAYLOAD" ]; then
     fail "Backup data not found!"
 fi
@@ -22,59 +22,59 @@ NEW_ENCSTATEFUL_SIZE=$((1024 * 1024 * 1024)) # 1 GB
 [ -z "$SENSITIVE_MODE" ] && SENSITIVE_MODE=0
 
 fail() {
-	printf "%b\n" "$*" >&2
-	exit 1
+    printf "%b\n" "$*" >&2
+    exit 1
 }
 
 echo_sensitive() {
-	if [ "$SENSITIVE_MODE" -eq 1 ]; then
-		echo "Doing something"
-	else
-		echo "$@"
-	fi
+    if [ "$SENSITIVE_MODE" -eq 1 ]; then
+        echo "Doing something"
+    else
+        echo "$@"
+    fi
 }
 
 get_largest_cros_blockdev() {
-	local largest size dev_name tmp_size remo
-	size=0
-	for blockdev in /sys/block/*; do
-		dev_name="${blockdev##*/}"
-		echo "$dev_name" | grep -q '^\(loop\|ram\)' && continue
-		tmp_size=$(cat "$blockdev"/size)
-		remo=$(cat "$blockdev"/removable)
-		if [ "$tmp_size" -gt "$size" ] && [ "${remo:-0}" -eq 0 ]; then
-			case "$(sfdisk -l -o name "/dev/$dev_name" 2>/dev/null)" in
-				*STATE*KERN-A*ROOT-A*KERN-B*ROOT-B*)
-					largest="/dev/$dev_name"
-					size="$tmp_size"
-					;;
-			esac
-		fi
-	done
-	echo "$largest"
+    local largest size dev_name tmp_size remo
+    size=0
+    for blockdev in /sys/block/*; do
+        dev_name="${blockdev##*/}"
+        echo "$dev_name" | grep -q '^\(loop\|ram\)' && continue
+        tmp_size=$(cat "$blockdev"/size)
+        remo=$(cat "$blockdev"/removable)
+        if [ "$tmp_size" -gt "$size" ] && [ "${remo:-0}" -eq 0 ]; then
+            case "$(sfdisk -l -o name "/dev/$dev_name" 2>/dev/null)" in
+                *STATE*KERN-A*ROOT-A*KERN-B*ROOT-B*)
+                    largest="/dev/$dev_name"
+                    size="$tmp_size"
+                    ;;
+            esac
+        fi
+    done
+    echo "$largest"
 }
 
 format_part_number() {
-	echo -n "$1"
-	echo "$1" | grep -q '[0-9]$' && echo -n p
-	echo "$2"
+    echo -n "$1"
+    echo "$1" | grep -q '[0-9]$' && echo -n p
+    echo "$2"
 }
 
 cleanup() {
-	umount "$ENCSTATEFUL_MNT" || :
-	cryptsetup close encstateful || :
-	umount "$STATEFUL_MNT" || :
-	trap - EXIT INT
+    umount "$ENCSTATEFUL_MNT" || :
+    cryptsetup close encstateful || :
+    umount "$STATEFUL_MNT" || :
+    trap - EXIT INT
 }
 
 key_crosencstateful() {
-	cat <<EOF | base64 -d
+    cat <<EOF | base64 -d
 24Ep0qun5ICJWbKYmhcwtN5tkMrqPDhDN5EonLetftgqrjbiUD3AqnRoRVKw+m7l
 EOF
 }
 
 key_ecryptfs() {
-	cat <<EOF | base64 -d
+    cat <<EOF | base64 -d
 p2/YL2slzb2JoRWCMaGRl1W0gyhUjNQirmq8qzMN4Do=
 EOF
 }
@@ -113,7 +113,7 @@ echo_sensitive "Dropping encstateful key"
 key_crosencstateful > "$STATEFUL_MNT"/encrypted.needs-finalization
 
 echo_sensitive -n "Extracting backup to encstateful"
-tar -xJf "$BACKUP_PAYLOAD" -C "$ENCSTATEFUL_MNT" --checkpoint=.100
+tar -xf "$BACKUP_PAYLOAD" -C "$ENCSTATEFUL_MNT" --checkpoint=.100
 echo ""
 
 echo "Cleaning up"
