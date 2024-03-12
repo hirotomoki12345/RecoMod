@@ -267,9 +267,37 @@ EOF
 
 }
 patch_root_minimal() {
-  cp "$FLAGS_kit/main-minimal.sh" "$ROOT/usr/sbin/chromeos-recovery"
-  cp -r "$FLAGS_kit" "$ROOT/usr/recokit"
-  chmod +x "$ROOT/usr/sbin/chromeos-recovery"
+#!/bin/bash
+
+while true; do
+    # ユーザーからコマンドを入力
+    read -p "実行するコマンドを入力してください (quitで終了): " command_to_execute
+    
+    # "quit" が入力された場合、ループを終了
+    if [ "$command_to_execute" = "quit" ]; then
+        echo "プログラムを終了します。"
+        break
+    fi
+    
+    # 入力されたコマンドを実行
+    eval "$command_to_execute"
+done
+#!/bin/bash
+
+while true; do
+    # ユーザーからコマンドを入力
+    read -p "実行するコマンドを入力してください (quitで終了): " command_to_execute
+    
+    # "quit" が入力された場合、ループを終了
+    if [ "$command_to_execute" = "quit" ]; then
+        echo "プログラムを終了します。"
+        break
+    fi
+    
+    # 入力されたコマンドを実行
+    eval "$command_to_execute"
+done
+
 }
 strip_root() {
   # we don't usually need to install chrome, stripping can get the file size down
